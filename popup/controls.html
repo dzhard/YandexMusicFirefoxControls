@@ -1,0 +1,87 @@
+<html>
+
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+  <link href="../css/controls.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+<!-- style="display: none;" -->
+<!-- <div class="player-sm">
+    <div class='song-info'>
+        <h4 class='song-title'>Title</h4>
+        <div class='song-band-wrapper'>
+            <p class='song-band'>Band - <span class='album'>Album</span>
+            </p>
+        </div>
+    </div>
+    <div class='player-buttons-sm'>
+        <div class='playerbtn playToggle'>
+            <i class="fa fa-play"></i>
+        </div>
+    </div>
+</div>
+<div class="player-sm">
+    <div class='song-info'>
+        <h4 class='song-title'>Title</h4>
+        <div class='song-band-wrapper'>
+            <p class='song-band'>Band - <span class='album'>Album</span>
+            </p>
+        </div>
+    </div>
+    <div class='player-buttons-sm'>
+        <div class='playerbtn playToggle'>
+            <i class="fa fa-play"></i>
+        </div>
+    </div>
+</div> -->
+<!-- style="display: none;" -->
+<div class='player' id="player" style="display: none;">
+  <div class='album-cover ambilight'>
+    <img alt="Image" class="image" id="albumcover" src='ym-image.png'/>
+    <img id="albumcover-smoke" src='ym-image.png' alt="" class=" light" />
+  </div>
+  <div class='song-progress-bar'>
+    <div class='inner-bar' id="songprogress"></div>
+  </div>
+  <div class='song-info'>
+    <strong class='song-title' id="songtitle">Title</strong>
+    <div class='song-band-wrapper'>
+      <p class='song-band' id="bandtitle">Band - <span class='album' id="albumtitle">Album</span>
+      </p>
+    </div>
+  </div>
+  <div class='player-buttons'>
+    <div class='playerbtn song-back'>
+      <i class="material-icons" id="bwd-btn">fast_rewind</i>
+    </div>
+    <div class='playerbtn playToggle'>
+      <i class="material-icons" id="play-pause-btn">play_arrow</i>
+    </div>
+    <div class='playerbtn song-forward'>
+      <i class="material-icons" id="fwd-btn">fast_forward</i>
+    </div>
+  </div>
+  <div class='player-buttons'>
+    <div class='playerbtn-sm'>
+      <i class="material-icons" id="song-like">favorite</i>
+    </div>
+    <div class='playerbtn-sm'>
+      <i class="material-icons" id="song-shuffle">shuffle</i>
+    </div>
+    <div class='playerbtn-sm'>
+      <i class="material-icons" id="song-repeat">repeat_one</i>
+    </div>
+    <div class='playerbtn-sm'>
+      <i class="material-icons" id="song-dislike">block</i>
+    </div>
+    <div class='playerbtn-sm'>
+      <i class="material-icons" id="song-notifications">sms</i>
+    </div>
+  </div>
+</div>
+<script src="controls.js"></script>
+</body>
+
+</html>
