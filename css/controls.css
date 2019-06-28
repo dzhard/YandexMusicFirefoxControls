@@ -1,65 +1,154 @@
 * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: "Varela Round", sans-serif;
-  }
-  
-  .player {
-    width: 100%;
-    max-width: 340px;
-    padding: 20px;
-    margin: 10px auto;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.35);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    border-radius: 5px;
-  }
-  .player .album-cover {
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.35);
-  }
-  .player .album-cover img {
-    display: block;
-    max-width: 100%;
-  }
-  .player .song-progress-bar {
-    width: 100%;
-    height: 3px;
-    background: #ddd;
-    margin: 10px 0;
-  }
-  .player .song-progress-bar .inner-bar {
-    height: 3px;
-    background: #df405a;
-    width: 25%;
-  }
-  .player .song-info .song-title {
-    margin-bottom: 0;
-  }
-  .player .player-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-  }
-  .player .player-buttons .playerbtn i {
-    font-size: 25px;
-    cursor: pointer;
-    transition: 0.15s ease-in-out;
-  }
+  box-sizing: border-box;
+  background: #fafafa;
+}
 
-  .player .player-buttons .playerbtn i:hover {
-    color: #df405a;
-  }
+body {
+  font-family: "Varela Round", sans-serif;
+  width: 300px;
+  overflow-x: hidden;
+}
+
+.player {
+  width: 100%;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.player-sm {
+  width: 100%;
+  margin-top: 2px;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.player-sm .player-buttons-sm {
+  right: 3px;
+  position: relative;
+}
+
+.player-sm .player-buttons-sm .playerbtn i {
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+}
+
+.player-sm .player-buttons-sm .playerbtn i:hover {
+  color: #df405a;
+}
+
+.player-sm .song-info {
+  width: 80%;
+}
+
+.player-sm .song-info .song-band-wrapper .song-band {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-right: 5px;
+  text-align: start;
+  font-size: 14px;
+}
+
+.player-sm .song-info .song-title {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  flex-direction: column;
+  font-size: 14px;
+  text-align: start;
+}
+
+.player .song-info .song-title {
+  margin: 5px;
+  text-align: start;
+  font-size: 16px;
+}
+
+.player .song-info .song-band {
+  margin: 5px;
+  text-align: start;
+  font-size: 14px;
+
+}
+
+.player .album-cover img {
+  align-content: center;
+  display: block;
+  max-width: 100%;
+}
+
+.player .song-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: #ddd;
+  margin: 5px 0;
+}
+
+.player .song-progress-bar .inner-bar {
+  height: 3px;
+  background: #df405a;
+  width: 25%;
+}
+
+.player .player-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.player .player-buttons .playerbtn i {
+  font-size: 25px;
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+}
+
+.player .player-buttons .playerbtn i:hover {
+  color: #df405a;
+}
+
+.btn-toggled {
+  color: #df405a;
+}
+
+.player .player-buttons .playerbtn-sm i {
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+}
+
+.player .player-buttons .playerbtn-sm i:hover {
+  color: #df405a;
+}
+
+.ambilight {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  position: relative;
+}
+
+.ambilight .image {
+  width: 100%;
+}
+
+.ambilight .light {
+  opacity: 0.75;
+  -webkit-filter: blur(30px);
+  filter: blur(30px);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
   
-  .player .player-buttons .playerbtn-sm i {
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.15s ease-in-out;
-  }
-  .player .player-buttons .playerbtn-sm i:hover {
-    color: #df405a;
-  }
