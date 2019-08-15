@@ -219,7 +219,9 @@ function fillPlayerData(response) {
     songProgress.style.width = "0%";
   }
   clearInterval(progressTimer);
-  progressTimer = setInterval(handleProgress, 1000, songProgress);
+  if (response.currentTrack.isPlaying) {
+    progressTimer = setInterval(handleProgress, 1000, songProgress);
+  }
 }
 
 function createSmPlayer(response, tab, undefPlayer) {
