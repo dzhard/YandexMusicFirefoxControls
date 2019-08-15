@@ -178,7 +178,14 @@ function createBigPlayer(response, tab) {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
   };
-
+  let volumeSelector = document.getElementById('volume_selector');
+  volumeSelector.value = response.volume;
+  volumeSelector.onchange = () => {
+    browser.tabs.sendMessage(tab.id, {action: "volume", volume: volumeSelector.value})
+    .then(rs => {
+      toggleDislikeStatusIcon(rs, dislikeBtn)
+    }).catch(onError);
+  }
   //response.volume
 }
 

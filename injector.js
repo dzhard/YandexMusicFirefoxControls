@@ -85,6 +85,9 @@ function onRecievedMessage(message, sender, sendResponse) {
       externalAPI.toggleRepeat();
       sendResponse(window.wrappedJSObject.getRepeat());
       break;
+    case "volume":
+      externalAPI.setVolume(message.volume);
+      break;
     default:
       console.log('unknown action requested');
       break
