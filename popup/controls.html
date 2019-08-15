@@ -37,10 +37,11 @@
     </div>
 </div> -->
 <!-- style="display: none;" -->
-<div class='player' id="player" style="display: none;">
+<div class='player' id="player">
   <div class='album-cover ambilight'>
     <img alt="Image" class="image" id="albumcover" src='ym-image.png'/>
-    <img id="albumcover-smoke" src='ym-image.png' alt="" class=" light" />
+    <img id="albumcover-smoke" src='ym-image.png' alt="" class=" light"/>
+
   </div>
   <div class='song-progress-bar'>
     <div class='inner-bar' id="songprogress"></div>
@@ -78,6 +79,12 @@
     </div>
     <div class='playerbtn-sm'>
       <i class="material-icons" id="song-notifications">sms</i>
+    </div>
+    <div class='playerbtn-sm'>
+      <i class="material-icons volume" id="volume">volume_up</i>
+      <span class="volume_popup">
+          <input type="range" min=0 max=100 value=50 class="vertical" orient="vertical"/>
+      </span>
     </div>
   </div>
 </div>

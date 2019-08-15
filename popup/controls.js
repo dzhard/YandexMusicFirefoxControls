@@ -181,6 +181,7 @@ function createBigPlayer(response, tab) {
 
   //response.volume
 }
+
 //TODO: progress after song changed still 100
 //TODO: double speed after unpause
 function handleProgress(progressbar) {
@@ -202,11 +203,14 @@ function fillPlayerData(response) {
   let bandTitle = document.getElementById('bandtitle');
   albumTitle.textContent = response.currentTrack.album.title;
   songTitle.textContent = response.currentTrack.title;
-  bandTitle.childNodes[0].textContent = response.currentTrack.artists[0].title
-      + ' - ';
+  bandTitle.childNodes[0].textContent = response.currentTrack.artists[0].title + ' - ';
 
   let songProgress = document.getElementById('songprogress');
-  songProgress.style.width = Math.round(response.progress.position / response.progress.duration * 100) + "%";
+  if (response.progress.position !== 0 && response.progress.duration !== 0) {
+    songProgress.style.width = Math.round(response.progress.position / response.progress.duration * 100) + "%";
+  } else {
+    songProgress.style.width = "0%";
+  }
   clearInterval(progressTimer);
   progressTimer = setInterval(handleProgress, 1000, songProgress);
 }

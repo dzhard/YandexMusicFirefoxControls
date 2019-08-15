@@ -151,4 +151,57 @@ body {
   left: 0;
   z-index: 0;
 }
-  
+
+.vertical {
+  background: transparent;
+}
+
+.volume_popup {
+  background: transparent;
+  position: relative;
+  display: inline-block;
+  height: 150px;
+  margin-top: -175px;
+  margin-left: -17px;
+}
+
+.playerbtn-sm .volume_popup {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+}
+
+.playerbtn-sm:hover .volume_popup {
+  visibility: visible;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  outline: none;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type=range]::-moz-range-track {
+  height: 100%;
+  width: 2px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #df405a;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  height: 7px;
+  width: 7px;
+  border-radius: 25px;
+  background: #df405a;
+  cursor: pointer;
+}
