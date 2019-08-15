@@ -34,10 +34,15 @@ function receiveMessage(event) {
 
 function trackNotification() {
   console.log("trackNotification");
-  let track = getTrack().currentTrack;
-  console.log(track);
-  console.log(track.artists.map(a => a.title).join(", ") + " - " + track.title);
-  new Notification(track.artists.map(a => a.title).join(", ") + " - " + track.title);
+  let track = window.wrappedJSObject.getTrack().currentTrack;
+  if (!track.isPlaying) {
+    return;
+  }
+  let artists = [];
+  for (let i = 0; i < track.artists.length; i++) {
+    artists.push(track.artists[i].title);
+  }
+  new Notification(artists.join(", ") + " - " + track.title);
 }
 
 /**
