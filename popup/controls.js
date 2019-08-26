@@ -2,12 +2,10 @@ document.addEventListener("DOMContentLoaded", handleDomLoaded);
 let activePlayer;
 let progressTimer;
 
-//TODO: volume
 //TODO: notifications
 browser.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender) {
-  console.log("track change", message)
   if (sender.id === "yamusic@dzhard.github.com") {
     if (message.type === "track") {
       fillPlayerData(message.msg)
@@ -33,51 +31,74 @@ function handleDomLoaded(e) {
 function loadedYandexTabs(tabs) {
   if (tabs.length === 1) {
     let tab = tabs[0];
-    console.log('requester state for tab:' + tab.id);
     browser.tabs.sendMessage(tab.id, {action: "state"})
     .then(response => {
       createBigPlayer(response, tab)
     }).catch(e => handleUnloadedTab(e, tab));
     return;
   }
+  let promises = [];
 
   if (tabs.length > 0) {
-    tabs.forEach(function (tab) {
-      console.log('requester state for tab:' + tab.id);
-      browser.tabs.sendMessage(tab.id, {action: "state"})
-      .then(response => {
-
-        if (response.currentTrack !== undefined) {
-          if (response.isPlaying) {
-            console.log('response.isPlaying');
-            if (activePlayer !== undefined) {//recreate last tab as a small player
-              createSmPlayer(activePlayer.response,
-                  activePlayer.tab)
-            }
-            createBigPlayer(response, tab)
-          } else {
-            if (response.progress !== undefined && response.progress.position > 0) {// checking if it's a paused
-              console.log('activePlayer, ', activePlayer);
-              if (activePlayer !== undefined) {
-                if (activePlayer.isPlaying) {
-                  createSmPlayer(response, tab);
-                } else {
-                  createSmPlayer(activePlayer.response, activePlayer.tab);//recreate last tab as a small player
-                  createBigPlayer(response, tab)
-                }
-              } else {
-                createBigPlayer(response, tab);
-              }
-
-            } else {
-              createSmPlayer(response, tab);
-            }
-          }
+    for (const tab of tabs) {
+      let promise = browser.tabs.sendMessage(tab.id, {action: "state"})
+      .then(rs => {
+        return {
+          response: rs,
+          tab: tab
         }
-      }).catch(e => handleUnloadedTab(e, tab));
-    });
+      }, error => {
+        return {
+          response: null,
+          tab: tab,
+          error: error
+        }
+      });
+
+      promises.push(promise);
+    }
+
+    Promise.all(promises)
+    .then(rs => fillPlayers(rs));
   }
 
+  function fillPlayers(responses) {
+    ///TODO: check unloaded tab not handles twice
+    for (const rs of responses) {
+      let response = rs.response;
+      let tab = rs.tab;
+      if (response == null) {
+        handleUnloadedTab(rs.error, tab);
+        continue;
+      }
+
+      if (response.currentTrack !== undefined) {
+        if (response.isPlaying) {
+          console.log('response.isPlaying');
+          if (activePlayer !== undefined) {//recreate last tab as a small player
+            createSmPlayer(activePlayer.response, activePlayer.tab)
+          }
+          createBigPlayer(response, tab)
+        } else {
+          if (response.progress !== undefined && response.progress.position > 0) {// checking if it's a paused
+            if (activePlayer !== undefined) {
+              if (activePlayer.isPlaying) {
+                createSmPlayer(response, tab);
+              } else {
+                createSmPlayer(activePlayer.response, activePlayer.tab);//recreate last tab as a small player
+                createBigPlayer(response, tab)
+              }
+            } else {
+              createBigPlayer(response, tab);
+            }
+
+          } else {
+            createSmPlayer(response, tab);
+          }
+        }
+      }
+    }
+  }
 }
 
 function handleUnloadedTab(e, tab) {
@@ -109,9 +130,10 @@ function createBigPlayer(response, tab) {
     isPlaying: response.isPlaying
   };
   console.log('create regular player', activePlayer);
+
   document.getElementById('player').style.display = null;
 
-  fillPlayerData(response)
+  fillPlayerData(response);
 
   let playBtn = document.getElementById('play-pause-btn');
   togglePlayStatusIcon(response.isPlaying, playBtn);
@@ -123,7 +145,7 @@ function createBigPlayer(response, tab) {
         let songProgress = document.getElementById('songprogress');
         progressTimer = setInterval(handleProgress, 1000, songProgress);
       } else {
-        clearInterval(progressTimer);
+        stopProgress();
       }
       togglePlayStatusIcon(rs.isPlaying, playBtn)
     }).catch(onError);
@@ -186,16 +208,13 @@ function createBigPlayer(response, tab) {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
   }
-  //response.volume
 }
 
-//TODO: progress after song changed still 100
-//TODO: double speed after unpause
 function handleProgress(progressbar) {
   let newWidth = parseInt(progressbar.style.width.replace("%", "")) + 1;
   if (newWidth > 100) {
     newWidth = 100;
-    clearInterval(progressTimer);
+    stopProgress();
   }
   progressbar.style.width = newWidth + "%";
 }
@@ -210,22 +229,25 @@ function fillPlayerData(response) {
   let bandTitle = document.getElementById('bandtitle');
   albumTitle.textContent = response.currentTrack.album.title;
   songTitle.textContent = response.currentTrack.title;
-  bandTitle.childNodes[0].textContent = response.currentTrack.artists[0].title + ' - ';
+  bandTitle.childNodes[0].textContent = response.currentTrack.artists.length > 0
+      ? response.currentTrack.artists[0].title + ' - ' : "";
 
   let songProgress = document.getElementById('songprogress');
+
   if (response.progress.position !== 0 && response.progress.duration !== 0) {
-    songProgress.style.width = Math.round(response.progress.position / response.progress.duration * 100) + "%";
+    let currentPos = response.progress.position / response.progress.duration * 100;
+    songProgress.style.width = Math.round(currentPos) + "%";
   } else {
     songProgress.style.width = "0%";
   }
-  clearInterval(progressTimer);
-  if (response.currentTrack.isPlaying) {
-    progressTimer = setInterval(handleProgress, 1000, songProgress);
+  stopProgress();
+  let timeout = response.currentTrack.duration / 100 * 1000;
+  if (response.isPlaying) {
+    progressTimer = setInterval(handleProgress, timeout, songProgress);
   }
 }
 
 function createSmPlayer(response, tab, undefPlayer) {
-  console.log('create sm player', response);
   let player = document.createElement("div");
   player.className = "player-sm";
   let songInfo = document.createElement("div");
@@ -240,23 +262,23 @@ function createSmPlayer(response, tab, undefPlayer) {
     }
   }
 
+  let currentTrack = response.currentTrack;
   title.className = "song-title";
   title.id = "songtitle" + tab.id;
-  title.textContent = response.currentTrack.title;
+  title.textContent = currentTrack.title;
   let bandWrapper = document.createElement("div");
   bandWrapper.className = "song-band-wrapper";
   let songBand = document.createElement("p");
   songBand.className = "song-band";
   songBand.id = "bandtitle" + tab.id;
 
-  let band = document.createTextNode(
-      response.currentTrack.artists[0].title + " - ");
-
+  let bandName = currentTrack.artists.length > 0 ? currentTrack.artists[0].title + " - " : "";
+  let band = document.createTextNode(bandName);
   let album = document.createElement("span");
   album.id = "album" + tab.id;
   album.className = "album";
 
-  album.textContent = response.currentTrack.album.title;
+  album.textContent = currentTrack.album.title;
 
   songBand.appendChild(band);
   songBand.appendChild(album);
@@ -319,4 +341,10 @@ function toggleRepeatStatusIcon(repeat, button) {
 
 function toggleDislikeStatusIcon(dislike, button) {
   button.className = dislike ? "material-icons btn-toggled" : "material-icons"
+}
+
+function stopProgress() {
+  if (progressTimer !== undefined && progressTimer != null) {
+    clearInterval(progressTimer);
+  }
 }
