@@ -13,19 +13,25 @@ function handleMessage(message, sender) {
   }
 }
 
-function handleDomLoaded(e) {
-  browser.tabs.query({url: "https://music.yandex.ru/*"})
+function requestTabsByDomain(domain) {
+  return browser.tabs.query({url: domain})
   .then(
       (ymTabs) => {
-        if (ymTabs == null || ymTabs.length === 0) {
-          failedToLoadYandexTabs();
-        } else {
-          loadedYandexTabs(ymTabs);
-        }
-      }, (error) => {
-        failedToLoadYandexTabs(error)
-      }
-  );
+        return ymTabs == null || ymTabs.length === 0 ? [] : ymTabs;
+      }, (error) => [])
+}
+
+function requestAllTabs() {
+  return Promise.all([
+    requestTabsByDomain("https://music.yandex.ru/*"),
+    requestTabsByDomain("https://music.yandex.by/*")
+  ])
+  .then(responses => responses.flat(1));
+}
+
+function handleDomLoaded(e) {
+  requestAllTabs()
+  .then(resp => loadedYandexTabs(resp))
 }
 
 function loadedYandexTabs(tabs) {
@@ -37,8 +43,8 @@ function loadedYandexTabs(tabs) {
     }).catch(e => handleUnloadedTab(e, tab));
     return;
   }
-  let promises = [];
 
+  let promises = [];
   if (tabs.length > 0) {
     for (const tab of tabs) {
       let promise = browser.tabs.sendMessage(tab.id, {action: "state"})
@@ -74,7 +80,6 @@ function loadedYandexTabs(tabs) {
 
       if (response.currentTrack !== undefined) {
         if (response.isPlaying) {
-          console.log('response.isPlaying');
           if (activePlayer !== undefined) {//recreate last tab as a small player
             createSmPlayer(activePlayer.response, activePlayer.tab)
           }
@@ -202,7 +207,7 @@ function createBigPlayer(response, tab) {
   };
   let volumeSelector = document.getElementById('volume_selector');
   volumeSelector.value = response.volume;
-  volumeSelector.onchange = () => {
+  volumeSelector.oninput = () => {
     browser.tabs.sendMessage(tab.id, {action: "volume", volume: volumeSelector.value})
     .then(rs => {
       toggleDislikeStatusIcon(rs, dislikeBtn)

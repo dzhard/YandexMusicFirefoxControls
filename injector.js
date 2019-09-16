@@ -19,6 +19,11 @@ function receiveMessage(event) {
     if (event.data.type === "track") {
       browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
 
+      browser.storage.sync.get("notification").then(
+          showNotifications => {
+            console.log(showNotifications)
+          }
+      );
       if (Notification.permission === "granted") {
         trackNotification();
       } else if (Notification.permission !== 'denied') {
