@@ -57,7 +57,7 @@
   "commands": {
     "play-pause": {
       "suggested_key": {
-        "default": "Alt+E"
+        "default": "Alt+P"
       },
       "description": "Play/Pause"
     },

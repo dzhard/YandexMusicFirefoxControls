@@ -1,4 +1,5 @@
 let menuPlayName;
+let menuPauseName;
 let menuPrevName;
 let menuNextName;
 let activeTab;
@@ -8,7 +9,8 @@ browser.commands.getAll()
   res.forEach(sc => {
     switch (sc.name) {
       case'play-pause':
-        menuPlayName = `${sc.description} (${sc.shortcut})`;
+        menuPlayName = `Play (${sc.shortcut})`;
+        menuPauseName = `Pause (${sc.shortcut})`;
         break;
       case'prev':
         menuPrevName = `${sc.description} (${sc.shortcut})`;
@@ -71,7 +73,6 @@ function buildMenu() {
       activeTab = r;
       updateMenus(activeTab);
     })
-
   });
 }
 
@@ -79,7 +80,7 @@ function updateMenus(r) {
   if (r !== undefined && r != null) {
     if (r.isPlaying) {
       browser.contextMenus.update("play-pause-menu", {
-        title: "Pause",
+        title: menuPauseName,
         icons: {
           "48": "/icons/pause-48.png",
           "96": "/icons/pause-96.png"
@@ -87,7 +88,7 @@ function updateMenus(r) {
       });
     } else {
       browser.contextMenus.update("play-pause-menu", {
-        title: "Play",
+        title: menuPlayName,
         icons: {
           "48": "/icons/play-arrow-48.png",
           "96": "/icons/play-arrow-96.png"

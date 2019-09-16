@@ -63,12 +63,12 @@ function prev(activeTab) {
 }
 
 function sendAction(activeTab, action) {
-  if (activeTab !== undefined) {
+  if (activeTab !== undefined && activeTab !=null) {
     browser.tabs.sendMessage(activeTab.tab.id, {action: action})
   } else {
     requestAllTabs()
     .then(r => {
-      sendAction(r.tab.id, action)
+      browser.tabs.sendMessage(r.tab.id, {action: action})
     })
   }
 }
