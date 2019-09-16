@@ -58,19 +58,19 @@
   "commands": {
     "play-pause": {
       "suggested_key": {
-        "default": "Alt+P"
+        "default": "Alt+E"
       },
       "description": "Play/Pause"
     },
     "next": {
       "suggested_key": {
-        "default": "Alt+Q"
+        "default": "Alt+W"
       },
       "description": "Next"
     },
     "prev": {
       "suggested_key": {
-        "default": "Alt+W"
+        "default": "Alt+Q"
       },
       "description": "Previous"
     }
