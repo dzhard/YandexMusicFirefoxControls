@@ -22,6 +22,10 @@ browser.commands.getAll()
 
 function buildMenu() {
   browser.contextMenus.create({
+    icons: {
+      "48": "/icons/play-arrow-48.png",
+      "96": "/icons/play-arrow-96.png"
+    },
     id: "play-pause-menu",
     title: menuPlayName,
     contexts: ["browser_action"],
@@ -30,6 +34,10 @@ function buildMenu() {
     }
   });
   browser.contextMenus.create({
+    icons: {
+      "48": "/icons/next-48.png",
+      "96": "/icons/next-96.png"
+    },
     id: "play-next-menu",
     title: menuNextName,
     contexts: ["browser_action"],
@@ -38,6 +46,10 @@ function buildMenu() {
     }
   });
   browser.contextMenus.create({
+    icons: {
+      "48": "/icons/prev-48.png",
+      "96": "/icons/prev-96.png"
+    },
     id: "play-prev-menu",
     title: menuPrevName,
     contexts: ["browser_action"],
