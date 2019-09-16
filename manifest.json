@@ -45,8 +45,7 @@
   "background": {
     "scripts": [
       "hotKeyHandler.js",
-      "contextMenu.js",
-      "tabScanner.js"
+      "contextMenu.js"
     ]
   },
   "browser_specific_settings": {

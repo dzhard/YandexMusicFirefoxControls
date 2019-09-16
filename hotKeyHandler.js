@@ -50,25 +50,27 @@ function requestAllTabs() {
   });
 }
 
-function pause() {
-  requestAllTabs()
-  .then(r => {
-    browser.tabs.sendMessage(r.tab.id, {action: "pause"})
-  })
+function pause(activeTab) {
+  sendAction(activeTab, "pause")
 }
 
-function next() {
-  requestAllTabs()
-  .then(r => {
-    browser.tabs.sendMessage(r.tab.id, {action: "next"})
-  })
+function next(activeTab) {
+  sendAction(activeTab, "next")
 }
 
-function prev() {
-  requestAllTabs()
-  .then(r => {
-    browser.tabs.sendMessage(r.tab.id, {action: "prev"})
-  })
+function prev(activeTab) {
+  sendAction(activeTab, "prev")
+}
+
+function sendAction(activeTab, action) {
+  if (activeTab !== undefined) {
+    browser.tabs.sendMessage(activeTab.tab.id, {action: action})
+  } else {
+    requestAllTabs()
+    .then(r => {
+      sendAction(r.tab.id, action)
+    })
+  }
 }
 
 function loadAllTabs(tabs) {

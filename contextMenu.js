@@ -1,6 +1,7 @@
 let menuPlayName;
 let menuPrevName;
 let menuNextName;
+let activeTab;
 
 browser.commands.getAll()
 .then(res => {
@@ -30,7 +31,7 @@ function buildMenu() {
     title: menuPlayName,
     contexts: ["browser_action"],
     onclick: () => {
-      pause();
+      pause(activeTab);
     }
   });
   browser.contextMenus.create({
@@ -42,7 +43,7 @@ function buildMenu() {
     title: menuNextName,
     contexts: ["browser_action"],
     onclick: () => {
-      next()
+      next(activeTab)
     }
   });
   browser.contextMenus.create({
@@ -54,7 +55,7 @@ function buildMenu() {
     title: menuPrevName,
     contexts: ["browser_action"],
     onclick: () => {
-      prev()
+      prev(activeTab)
     }
   });
   browser.contextMenus.create({
@@ -63,4 +64,38 @@ function buildMenu() {
     contexts: ["browser_action"],
     onclick: () => browser.runtime.openOptionsPage()
   });
+
+  browser.contextMenus.onShown.addListener(() => {
+    requestAllTabs()
+    .then(r => {
+      activeTab = r;
+      updateMenus(activeTab);
+    })
+
+  });
+}
+
+function updateMenus(r) {
+  if (r !== undefined && r != null) {
+    if (r.isPlaying) {
+      browser.contextMenus.update("play-pause-menu", {
+        title: "Pause",
+        icons: {
+          "48": "/icons/pause-48.png",
+          "96": "/icons/pause-96.png"
+        }
+      });
+    } else {
+      browser.contextMenus.update("play-pause-menu", {
+        title: "Play",
+        icons: {
+          "48": "/icons/play-arrow-48.png",
+          "96": "/icons/play-arrow-96.png"
+        }
+      });
+    }
+
+    browser.contextMenus.refresh();
+  }
+
 }
