@@ -305,17 +305,16 @@ function createSmPlayer(response, tab, undefPlayer) {
   player.appendChild(plButtons);
 
   playI.onclick = () => {
-    togglePause(tab, playI)
+    browser.tabs.sendMessage(tab.id, {action: "pause"})
+    .then(response => {
+      togglePlayStatusIcon(response.isPlaying, playI);
+
+      let playBtn = document.getElementById('play-pause-btn');
+      togglePlayStatusIcon(false, playBtn);
+    }).catch(onError);
   };
   document.body.appendChild(player);
 
-}
-
-function togglePause(tab, button) {
-  browser.tabs.sendMessage(tab.id, {action: "pause"})
-  .then(response => {
-    togglePlayStatusIcon(response.isPlaying, button)
-  }).catch(onError);
 }
 
 function togglePlayStatusIcon(isPlaying, button) {
