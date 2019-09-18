@@ -138,7 +138,7 @@ function createBigPlayer(response, tab) {
 
   document.getElementById('player').style.display = null;
 
-  fillPlayerData(response);
+  fillPlayerData(response, tab.id);
 
   let playBtn = document.getElementById('play-pause-btn');
   togglePlayStatusIcon(response.isPlaying, playBtn);
@@ -224,7 +224,7 @@ function handleProgress(progressbar) {
   progressbar.style.width = newWidth + "%";
 }
 
-function fillPlayerData(response) {
+function fillPlayerData(response, tabId) {
   document.getElementById('albumcover').setAttribute('src',
       'http://' + response.currentTrack.cover.replace('%%', '200x200'));
   document.getElementById('albumcover-smoke').setAttribute('src',
@@ -237,6 +237,16 @@ function fillPlayerData(response) {
   bandTitle.childNodes[0].textContent = response.currentTrack.artists.length > 0
       ? response.currentTrack.artists[0].title + ' - ' : "";
 
+  if (tabId !== undefined) {
+    //popup opened, add events to navigate to the tab
+    let navigateToTab = () => {
+      browser.tabs.update(tabId, {active: true});
+      close()
+    };
+    songTitle.onclick = navigateToTab;
+    albumTitle.onclick = navigateToTab;
+    bandTitle.onclick = navigateToTab;
+  }
   let songProgress = document.getElementById('songprogress');
 
   if (response.progress.position !== 0 && response.progress.duration !== 0) {
@@ -259,13 +269,6 @@ function createSmPlayer(response, tab, undefPlayer) {
 
   songInfo.className = "song-info";
   let title = document.createElement("h4");
-  if (undefPlayer)//navigate to tab to load it
-  {
-    title.onclick = () => {
-      browser.tabs.update(tab.id, {active: true});
-      close()
-    }
-  }
 
   let currentTrack = response.currentTrack;
   title.className = "song-title";
@@ -303,6 +306,13 @@ function createSmPlayer(response, tab, undefPlayer) {
   plButtons.appendChild(playBtn);
   player.appendChild(songInfo);
   player.appendChild(plButtons);
+
+  let navigateToTab = () => {
+    browser.tabs.update(tab.id, {active: true});
+    close()
+  };
+  title.onclick = navigateToTab;
+  songBand.onclick = navigateToTab;
 
   playI.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "pause"})
