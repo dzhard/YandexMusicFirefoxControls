@@ -20,7 +20,6 @@ function receiveMessage(event) {
       browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
       browser.storage.local.get({"showNotifications": false}).then(
           storage => {
-            console.log(storage)
             if (storage.showNotifications) {
               showNotification();
             }
