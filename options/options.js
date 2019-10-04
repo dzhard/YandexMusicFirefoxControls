@@ -1,23 +1,18 @@
-function saveOptions(e) {
-  e.preventDefault();
-  browser.storage.sync.set({
-    notifications: document.querySelector("#notifications").value
-  });
+const notificationsChk = document.querySelector("#notifications");
+
+function updateUI(restoredSettings) {
+  console.log(restoredSettings)
+  console.log(restoredSettings.showNotifications)
+  notificationsChk.checked = restoredSettings.showNotifications;
 }
 
-function restoreOptions() {
-
-  function setCurrentChoice(result) {
-    document.querySelector("#notifications").value = result.notifications || false;
-  }
-
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
-
-  var getting = browser.storage.sync.get("notifications");
-  getting.then(setCurrentChoice, onError);
+function onError(e) {
+  console.error(e);
 }
 
-document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("form").addEventListener("submit", saveOptions);
+const gettingStoredSettings = browser.storage.local.get({"showNotifications": false});
+gettingStoredSettings.then(updateUI, onError);
+
+notificationsChk.onchange = () => {
+  browser.storage.local.set({"showNotifications": notificationsChk.checked});
+}

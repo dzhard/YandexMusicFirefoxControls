@@ -1,0 +1,20 @@
+body {
+  width: 25em;
+  font-family: "Open Sans Light", sans-serif;
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+
+.title {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+label {
+  float: left;
+}
+
+input {
+  margin: 0.5em;
+}
