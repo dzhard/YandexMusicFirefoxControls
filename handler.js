@@ -2,7 +2,7 @@ function onTrackChanged() {
   window.postMessage({type: "track", msg:  getTrack()});
 }
 
-externalAPI.on(externalAPI.EVENT_TRACK, onTrackChanged)
+externalAPI.on(externalAPI.EVENT_TRACK, onTrackChanged);
 
 function getTrack() {
   return {

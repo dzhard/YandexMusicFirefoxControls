@@ -18,36 +18,40 @@ function receiveMessage(event) {
   if (event.data) {
     if (event.data.type === "track") {
       browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
-
-      browser.storage.sync.get("notification").then(
-          showNotifications => {
-            console.log(showNotifications)
+      browser.storage.local.get({"showNotifications": false}).then(
+          storage => {
+            console.log(storage)
+            if (storage.showNotifications) {
+              showNotification();
+            }
           }
-      );
-      if (Notification.permission === "granted") {
-        trackNotification();
-      } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
-          if (permission === "granted") {
-            trackNotification();
-          }
-        });
-      }
+      )
     }
   }
 }
 
-function trackNotification() {
-  console.log("trackNotification");
-  let track = window.wrappedJSObject.getTrack().currentTrack;
-  if (!track.isPlaying) {
-    return;
+function showNotification() {
+  if (Notification.permission === "granted") {
+    trackNotification();
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      if (permission === "granted") {
+        trackNotification();
+      }
+    });
   }
+}
+
+function trackNotification() {
+  let track = window.wrappedJSObject.getTrack().currentTrack;
   let artists = [];
   for (let i = 0; i < track.artists.length; i++) {
     artists.push(track.artists[i].title);
   }
-  new Notification(artists.join(", ") + " - " + track.title);
+
+  console.log(artists.join(", ") + " - " + track.title);
+  let notification = new Notification(artists.join(", ") + " - " + track.title);
+  setTimeout(notification.close.bind(notification), 2500);
 }
 
 /**

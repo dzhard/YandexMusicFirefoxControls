@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", handleDomLoaded);
 let activePlayer;
 let progressTimer;
+let showNotifications;
 
-//TODO: notifications
 browser.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender) {
@@ -134,8 +134,6 @@ function createBigPlayer(response, tab) {
     tab: tab,
     isPlaying: response.isPlaying
   };
-  console.log('create regular player', activePlayer);
-
   document.getElementById('player').style.display = null;
 
   fillPlayerData(response, tab.id);
@@ -212,7 +210,24 @@ function createBigPlayer(response, tab) {
     .then(rs => {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
-  }
+  };
+
+  let notifBtn = document.getElementById('song-notifications');
+  browser.storage.local.get({"showNotifications": false}).then(
+      storage => {
+        showNotifications = storage.showNotifications;
+
+        toggleNotificationsIcon(showNotifications, notifBtn);
+        notifBtn.onclick = () => {
+          showNotifications = !showNotifications;
+          browser.storage.local.set({"showNotifications": showNotifications})
+          .then(() => {
+            toggleNotificationsIcon(showNotifications, notifBtn);
+          }).catch(onError);
+        };
+      }
+  )
+
 }
 
 function handleProgress(progressbar) {
@@ -335,8 +350,16 @@ function toggleLikeStatusIcon(liked, button) {
   button.className = liked ? "material-icons btn-toggled" : "material-icons"
 }
 
+function toggleNotificationsIcon(show, button) {
+  button.className = show ? "material-icons btn-toggled" : "material-icons"
+}
+
 function toggleShuffleStatusIcon(shuffle, button) {
   button.className = shuffle ? "material-icons btn-toggled" : "material-icons"
+}
+
+function toggleDislikeStatusIcon(dislike, button) {
+  button.className = dislike ? "material-icons btn-toggled" : "material-icons"
 }
 
 function toggleRepeatStatusIcon(repeat, button) {
@@ -351,10 +374,6 @@ function toggleRepeatStatusIcon(repeat, button) {
     button.className = "material-icons";
     button.textContent = "repeat"
   }
-}
-
-function toggleDislikeStatusIcon(dislike, button) {
-  button.className = dislike ? "material-icons btn-toggled" : "material-icons"
 }
 
 function stopProgress() {
