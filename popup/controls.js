@@ -138,10 +138,11 @@ function createBigPlayer(response, tab) {
 
   fillPlayerData(response, tab.id);
 
-  let playBtn = document.getElementById('play-pause-btn');
-  togglePlayStatusIcon(response.isPlaying, playBtn);
+  let playI = document.getElementById('play-pause-btn');
+  playI.parentElement.id = 'playI' + tab.id;
+  togglePlayStatusIcon(response.isPlaying, playI);
 
-  playBtn.onclick = () => {
+  playI.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "pause"})
     .then(rs => {
       if (rs.isPlaying) {
@@ -150,7 +151,7 @@ function createBigPlayer(response, tab) {
       } else {
         stopProgress();
       }
-      togglePlayStatusIcon(rs.isPlaying, playBtn)
+      updatePlayButtonsState(playI, rs.isPlaying)
     }).catch(onError);
   };
 
@@ -228,6 +229,16 @@ function createBigPlayer(response, tab) {
       }
   )
 
+}
+
+function updatePlayButtonsState(pressedI, isPlaying) {
+  let elementsByClassName = document.getElementsByClassName("playToggle");
+  console.log(elementsByClassName)
+
+  for (let i = 0; i < elementsByClassName.length; i++) {
+    let item = elementsByClassName.item(i);
+    togglePlayStatusIcon(isPlaying && pressedI.parentElement.id === item.id, item.firstElementChild)
+  }
 }
 
 function handleProgress(progressbar) {
@@ -312,11 +323,11 @@ function createSmPlayer(response, tab, undefPlayer) {
   let plButtons = document.createElement("div");
   plButtons.className = "player-buttons-sm";
   let playBtn = document.createElement("div");
+  playBtn.id = 'playBtn' + tab.id;
   playBtn.className = "playerbtn playToggle";
   let playI = document.createElement("i");
   playI.className = "material-icons";
   playI.textContent = "play_arrow";
-
   playBtn.appendChild(playI);
   plButtons.appendChild(playBtn);
   player.appendChild(songInfo);
@@ -331,11 +342,10 @@ function createSmPlayer(response, tab, undefPlayer) {
 
   playI.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "pause"})
-    .then(response => {
-      togglePlayStatusIcon(response.isPlaying, playI);
-
-      let playBtn = document.getElementById('play-pause-btn');
-      togglePlayStatusIcon(false, playBtn);
+    .then(rs => {
+      togglePlayStatusIcon(rs.isPlaying, playI);
+      updatePlayButtonsState(playI, rs.isPlaying);
+      stopProgress();
     }).catch(onError);
   };
   document.body.appendChild(player);
