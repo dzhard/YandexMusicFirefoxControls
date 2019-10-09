@@ -18,7 +18,7 @@ function requestTabsByDomain(domain) {
   .then(
       (ymTabs) => {
         return ymTabs == null || ymTabs.length === 0 ? [] : ymTabs;
-      }, (error) => [])
+      }, () => [])
 }
 
 function requestAllTabs() {
@@ -69,7 +69,6 @@ function loadedYandexTabs(tabs) {
   }
 
   function fillPlayers(responses) {
-    ///TODO: check unloaded tab not handles twice
     for (const rs of responses) {
       let response = rs.response;
       let tab = rs.tab;
@@ -116,12 +115,8 @@ function handleUnloadedTab(e, tab) {
     response.currentTrack.artists[0].title = "    ";
     response.currentTrack.title = "    Unknown     ";
     response.currentTrack.album.title = "      ";
-    createSmPlayer(response, tab, true);
+    createSmPlayer(response, tab);
   }
-}
-
-function failedToLoadYandexTabs() {
-  console.log("no yandex music tabs found");
 }
 
 function onError(e) {
@@ -288,7 +283,7 @@ function fillPlayerData(response, tabId) {
   }
 }
 
-function createSmPlayer(response, tab, undefPlayer) {
+function createSmPlayer(response, tab) {
   let player = document.createElement("div");
   player.className = "player-sm";
   let songInfo = document.createElement("div");
