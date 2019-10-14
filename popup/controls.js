@@ -30,6 +30,7 @@ function requestAllTabs() {
 }
 
 function handleDomLoaded(e) {
+  document.getElementById('player').style.display = 'none';
   requestAllTabs()
   .then(resp => loadedYandexTabs(resp))
 }
@@ -228,8 +229,6 @@ function createBigPlayer(response, tab) {
 
 function updatePlayButtonsState(pressedI, isPlaying) {
   let elementsByClassName = document.getElementsByClassName("playToggle");
-  console.log(elementsByClassName)
-
   for (let i = 0; i < elementsByClassName.length; i++) {
     let item = elementsByClassName.item(i);
     togglePlayStatusIcon(isPlaying && pressedI.parentElement.id === item.id, item.firstElementChild)
