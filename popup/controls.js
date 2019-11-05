@@ -200,6 +200,7 @@ function createBigPlayer(response, tab) {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
   };
+
   let volumeSelector = document.getElementById('volume_selector');
   volumeSelector.value = response.volume;
   volumeSelector.oninput = () => {
@@ -208,6 +209,15 @@ function createBigPlayer(response, tab) {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
   };
+  
+   volumeSelector.onwheel = (event) => {
+   let vol = parseFloat(volumeSelector.value);
+   event.deltaY<0?vol = vol  + 0.05:vol = vol  - 0.05;
+   if(vol > 1) vol =1;
+   if(vol < 0) vol =0;
+   volumeSelector.value = vol;
+   browser.tabs.sendMessage(tab.id, {action: "volume", volume: vol})
+  }
 
   let notifBtn = document.getElementById('song-notifications');
   browser.storage.local.get({"showNotifications": false}).then(
