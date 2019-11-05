@@ -210,14 +210,9 @@ function createBigPlayer(response, tab) {
     }).catch(onError);
   };
   
-   volumeSelector.onwheel = (event) => {
-   let vol = parseFloat(volumeSelector.value);
-   event.deltaY<0?vol = vol  + 0.05:vol = vol  - 0.05;
-   if(vol > 1) vol =1;
-   if(vol < 0) vol =0;
-   volumeSelector.value = vol;
-   browser.tabs.sendMessage(tab.id, {action: "volume", volume: vol})
-  }
+  let volumeBtn =  document.getElementById('volume');
+  volumeBtn.onwheel  = (event) => { onWheelVolume(volumeSelector, tab, event); }
+  volumeSelector.onwheel = (event) => { onWheelVolume(volumeSelector, tab,  event); }
 
   let notifBtn = document.getElementById('song-notifications');
   browser.storage.local.get({"showNotifications": false}).then(
@@ -236,6 +231,15 @@ function createBigPlayer(response, tab) {
   )
 
 }
+
+function onWheelVolume(volumeSelector, tab,  event) {
+  let vol = parseFloat(volumeSelector.value);
+  event.deltaY<0?vol = vol  + 0.05:vol = vol  - 0.05;
+  if(vol > 1) vol =1;
+  if(vol < 0) vol =0;
+  volumeSelector.value = vol;
+  browser.tabs.sendMessage(tab.id, {action: "volume", volume: vol})
+ }
 
 function updatePlayButtonsState(pressedI, isPlaying) {
   let elementsByClassName = document.getElementsByClassName("playToggle");
