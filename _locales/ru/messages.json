@@ -1,0 +1,101 @@
+{
+  "extensionName": {
+    "message": "Яндекс.Музыка Управление",
+    "description": "Yandex Music Controls and hotkeys."
+  },
+
+  "extensionDescription": {
+    "message": "Управление для Яндекс.Музыка",
+    "description": "Description of the extension."
+  },
+  "notificationTitle": {
+    "message": "Яндекс.Музыка",
+    "description": "Notification title."
+  },
+  "notificationContent": {
+    "message": "Сейчас играет: $ARTIST$ - $TRACK$.",
+    "description": "Tells the user which track is playing.",
+    "placeholders": {
+      "artist" : {
+        "content" : "$1",
+        "example" : "неизвестный исполнитель"
+      },
+      "track" : {
+        "content" : "$2",
+        "example" : "неизвестный трек"
+      }
+    }
+  },
+  "cmPrev": {
+  "message": "Предыдущий ($1)",
+  "description": "Previous track"
+  },
+  "cmNext": {
+    "message": "Следующий ($1)",
+    "description": "Next track"
+  },
+  "cmPlay": {
+    "message": "Играть ($1)",
+    "description": "Play track"
+  },
+  "cmPause": {
+    "message": "Пауза ($1)",
+    "description": "Pause track"
+  },
+  "cmOptions": {
+    "message": "Опции",
+    "description": "Options"
+  },
+  "prev": {
+    "message": "Предыдущий",
+    "description": "Previous track"
+  },
+  "next": {
+    "message": "Следующий",
+    "description": "Next track"
+  },
+  "play": {
+    "message": "Играть",
+    "description": "Play track"
+  },
+  "pause": {
+    "message": "Пауза",
+    "description": "Pause track"
+  },
+  "like": {
+    "message": "Нравится",
+    "description": "Like"
+  },
+  "shuffle": {
+    "message": "Перемешать",
+    "description": "Shuffle"
+  },
+  "repeat": {
+    "message": "Повторять",
+    "description": "Repeat"
+  },
+  "repeat_one": {
+    "message": "Повторять один",
+    "description": "Repeat"
+  },
+  "dislike": {
+    "message": "Блокировать трек",
+    "description": "Block track"
+  },
+  "volume": {
+    "message": "Громкость",
+    "description": "Volume"
+  },
+  "notifications": {
+    "message": "Уведомления",
+    "description": "Notifications"
+  },
+  "notificationsTitle": {
+    "message": "Уведомления",
+    "description": "Notifications"
+  },
+  "showNotificationsLabel": {
+    "message": "Показывать уведомления",
+    "description": "Show Notifications"
+  }
+}

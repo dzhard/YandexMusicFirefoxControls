@@ -1,8 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "YandexMusicControl",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
   "version": "1.0.2",
-  "description": "Yandex Music Controls and hotkeys.",
+  "default_locale": "en",
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
@@ -28,7 +29,7 @@
   },
   "browser_action": {
     "default_icon": "icons/icon-48.png",
-    "default_title": "Yandex Music Control",
+    "default_title": "__MSG_extensionName__",
     "default_popup": "popup/controls.html"
   },
   "content_scripts": [
