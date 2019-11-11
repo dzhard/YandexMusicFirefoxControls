@@ -153,6 +153,9 @@ function createBigPlayer(response, tab) {
 
   let bwdBtn = document.getElementById('bwd-btn');
   let fwdBtn = document.getElementById('fwd-btn');
+  bwdBtn.title = browser.i18n.getMessage("prev");
+  fwdBtn.title = browser.i18n.getMessage("next");
+
   bwdBtn.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "prev"})
     .then(rs => {
@@ -167,6 +170,8 @@ function createBigPlayer(response, tab) {
   };
 
   let likeBtn = document.getElementById('song-like');
+  likeBtn.title = browser.i18n.getMessage("like");
+
   likeBtn.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "like"})
     .then(rs => {
@@ -176,6 +181,7 @@ function createBigPlayer(response, tab) {
   toggleLikeStatusIcon(response.currentTrack.liked, likeBtn);
 
   let shuffleBtn = document.getElementById('song-shuffle');
+  shuffleBtn.title = browser.i18n.getMessage("shuffle");
   shuffleBtn.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "shuffle"})
     .then(rs => {
@@ -194,6 +200,7 @@ function createBigPlayer(response, tab) {
   toggleRepeatStatusIcon(response.repeat, repeatBtn);
 
   let dislikeBtn = document.getElementById('song-dislike');
+  dislikeBtn.title = browser.i18n.getMessage("dislike");
   dislikeBtn.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "dislike"})
     .then(rs => {
@@ -211,10 +218,12 @@ function createBigPlayer(response, tab) {
   };
   
   let volumeBtn =  document.getElementById('volume');
+  volumeBtn.title = browser.i18n.getMessage("volume");
   volumeBtn.onwheel  = (event) => { onWheelVolume(volumeSelector, tab, event); }
   volumeSelector.onwheel = (event) => { onWheelVolume(volumeSelector, tab,  event); }
 
   let notifBtn = document.getElementById('song-notifications');
+  notifBtn.title = browser.i18n.getMessage("notificationsTitle");
   browser.storage.local.get({"showNotifications": false}).then(
       storage => {
         showNotifications = storage.showNotifications;
@@ -361,7 +370,13 @@ function createSmPlayer(response, tab) {
 }
 
 function togglePlayStatusIcon(isPlaying, button) {
-  button.textContent = isPlaying ? "pause" : "play_arrow"
+  if(isPlaying) {
+    button.textContent = "pause";
+    button.title = browser.i18n.getMessage("pause");
+  }else {
+    button.textContent = "play_arrow";
+    button.title = browser.i18n.getMessage("play");
+  }
 }
 
 function toggleLikeStatusIcon(liked, button) {
@@ -384,11 +399,14 @@ function toggleRepeatStatusIcon(repeat, button) {
   if (repeat) {
     button.className = "material-icons btn-toggled";
     if (repeat === 1) {
+      button.title = browser.i18n.getMessage("repeat_one");
       button.textContent = "repeat_one"
     } else {
+      button.title = browser.i18n.getMessage("repeat");
       button.textContent = "repeat"
     }
   } else {
+    button.title = browser.i18n.getMessage("repeat");
     button.className = "material-icons";
     button.textContent = "repeat"
   }

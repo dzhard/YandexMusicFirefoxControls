@@ -1,0 +1,100 @@
+{
+  "extensionName": {
+    "message": "Yandex Music Controls and hotkeys.",
+    "description": "Yandex Music Controls and hotkeys."
+  },
+  "extensionDescription": {
+    "message": "Extension to control Yandex Music tabs.",
+    "description": "Description of the extension."
+  },
+  "notificationTitle": {
+    "message": "Yandex.Music",
+    "description": "Notification title."
+  },
+  "notificationContent": {
+    "message": "Now playing: $ARTIST$ - $TRACK$.",
+    "description": "Tells the user which track is playing.",
+    "placeholders": {
+      "artist" : {
+        "content" : "$1",
+        "example" : "unknown artist"
+      },
+      "track" : {
+        "content" : "$2",
+        "example" : "unknown track"
+      }
+    }
+  },
+  "cmPrev": {
+    "message": "Previous ($1)",
+    "description": "Previous track (context menu)"
+  },
+  "cmNext": {
+    "message": "Next ($1)",
+    "description": "Next track (context menu)"
+  },
+  "cmPlay": {
+    "message": "Play ($1)",
+    "description": "Play track (context menu)"
+  },
+  "cmPause": {
+    "message": "Pause ($1)",
+    "description": "Pause track (context menu)"
+  },
+  "cmOptions": {
+    "message": "Options",
+    "description": "Options (context menu)"
+  },
+  "prev": {
+    "message": "Previous",
+    "description": "Previous track"
+  },
+  "next": {
+    "message": "Next",
+    "description": "Next track"
+  },
+  "play": {
+    "message": "Play",
+    "description": "Play track"
+  },
+  "pause": {
+    "message": "Pause",
+    "description": "Pause track"
+  },
+  "like": {
+    "message": "Like",
+    "description": "Like"
+  },
+  "shuffle": {
+    "message": "Shuffle",
+    "description": "Shuffle"
+  },
+  "repeat": {
+    "message": "Repeat",
+    "description": "Repeat"
+  },
+  "repeat_one": {
+    "message": "Repeat one",
+    "description": "Repeat"
+  },
+  "dislike": {
+    "message": "Block",
+    "description": "Block track"
+  },
+  "volume": {
+    "message": "Volume",
+    "description": "Volume"
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": "Notifications"
+  },
+  "notificationsTitle": {
+    "message": "Notifications",
+    "description": "Notifications"
+  },
+  "showNotificationsLabel": {
+    "message": "Show Notifications",
+    "description": "Show Notifications"
+  }
+}

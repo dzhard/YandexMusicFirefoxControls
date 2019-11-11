@@ -9,14 +9,14 @@ browser.commands.getAll()
   res.forEach(sc => {
     switch (sc.name) {
       case'play-pause':
-        menuPlayName = `Play (${sc.shortcut})`;
-        menuPauseName = `Pause (${sc.shortcut})`;
+        menuPlayName = sc.shortcut;
+        menuPauseName = sc.shortcut;
         break;
       case'prev':
-        menuPrevName = `${sc.description} (${sc.shortcut})`;
+        menuPrevName = sc.shortcut;
         break;
       case'next':
-        menuNextName = `${sc.description} (${sc.shortcut})`;
+        menuNextName =  sc.shortcut;
         break
     }
   });
@@ -42,7 +42,7 @@ function buildMenu() {
       "96": "/icons/next-96.png"
     },
     id: "play-next-menu",
-    title: menuNextName,
+    title: browser.i18n.getMessage("cmNext", menuNextName),
     contexts: ["browser_action"],
     onclick: () => {
       next(activeTab)
@@ -54,7 +54,7 @@ function buildMenu() {
       "96": "/icons/prev-96.png"
     },
     id: "play-prev-menu",
-    title: menuPrevName,
+    title:  browser.i18n.getMessage("cmPrev", menuPrevName),
     contexts: ["browser_action"],
     onclick: () => {
       prev(activeTab)
@@ -62,7 +62,7 @@ function buildMenu() {
   });
   browser.contextMenus.create({
     id: "options-menu",
-    title: 'Options',
+    title: browser.i18n.getMessage("cmOptions"),
     contexts: ["browser_action"],
     onclick: () => browser.runtime.openOptionsPage()
   });
@@ -80,7 +80,7 @@ function updateMenus(r) {
   if (r !== undefined && r != null) {
     if (r.isPlaying) {
       browser.contextMenus.update("play-pause-menu", {
-        title: menuPauseName,
+        title: browser.i18n.getMessage("cmPause", menuPauseName),
         icons: {
           "48": "/icons/pause-48.png",
           "96": "/icons/pause-96.png"
@@ -88,7 +88,7 @@ function updateMenus(r) {
       });
     } else {
       browser.contextMenus.update("play-pause-menu", {
-        title: menuPlayName,
+        title: browser.i18n.getMessage("cmPlay", menuPlayName),
         icons: {
           "48": "/icons/play-arrow-48.png",
           "96": "/icons/play-arrow-96.png"

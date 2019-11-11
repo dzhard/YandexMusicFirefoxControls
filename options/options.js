@@ -1,8 +1,7 @@
 const notificationsChk = document.querySelector("#notifications");
-
+document.getElementById("notificationsTitle").textContent = browser.i18n.getMessage("notificationsTitle");
+document.getElementById("showNotificationsLabel").firstChild.textContent = browser.i18n.getMessage("showNotificationsLabel");
 function updateUI(restoredSettings) {
-  console.log(restoredSettings)
-  console.log(restoredSettings.showNotifications)
   notificationsChk.checked = restoredSettings.showNotifications;
 }
 
@@ -15,4 +14,4 @@ gettingStoredSettings.then(updateUI, onError);
 
 notificationsChk.onchange = () => {
   browser.storage.local.set({"showNotifications": notificationsChk.checked});
-}
+};

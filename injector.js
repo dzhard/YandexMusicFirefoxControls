@@ -48,8 +48,11 @@ function trackNotification() {
     artists.push(track.artists[i].title);
   }
 
-  console.log(artists.join(", ") + " - " + track.title);
-  let notification = new Notification(artists.join(", ") + " - " + track.title);
+  let body = browser.i18n.getMessage("notificationContent", [artists.join(", "), track.title]);
+  let title = browser.i18n.getMessage("notificationTitle");
+
+  let notification = new Notification(title, {"body": body});
+
   setTimeout(notification.close.bind(notification), 2500);
 }
 
