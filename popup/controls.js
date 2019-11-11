@@ -19,6 +19,9 @@ function requestTabsByDomain(domain) {
       (ymTabs) => {
         return ymTabs == null || ymTabs.length === 0 ? [] : ymTabs;
       }, () => [])
+  .catch(() => {
+    return [];
+  })
 }
 
 function requestAllTabs() {
@@ -67,6 +70,15 @@ function loadedYandexTabs(tabs) {
 
     Promise.all(promises)
     .then(rs => fillPlayers(rs));
+  } else {
+    let openYaMusicPanel = document.getElementById("welcome");
+    let openYaMusicMessage = document.getElementById("openYaMessage");
+    openYaMusicMessage.innerText = browser.i18n.getMessage("openYaMusicMessage");
+    openYaMusicPanel.style.display = "flex";
+    document.getElementById("openYaMessage").onclick = () => {
+      browser.tabs.create({"url": "https://music.yandex.ru/"})
+      window.close();
+    }
   }
 
   function fillPlayers(responses) {
@@ -216,11 +228,15 @@ function createBigPlayer(response, tab) {
       toggleDislikeStatusIcon(rs, dislikeBtn)
     }).catch(onError);
   };
-  
-  let volumeBtn =  document.getElementById('volume');
+
+  let volumeBtn = document.getElementById('volume');
   volumeBtn.title = browser.i18n.getMessage("volume");
-  volumeBtn.onwheel  = (event) => { onWheelVolume(volumeSelector, tab, event); }
-  volumeSelector.onwheel = (event) => { onWheelVolume(volumeSelector, tab,  event); }
+  volumeBtn.onwheel = (event) => {
+    onWheelVolume(volumeSelector, tab, event);
+  };
+  volumeSelector.onwheel = (event) => {
+    onWheelVolume(volumeSelector, tab, event);
+  };
 
   let notifBtn = document.getElementById('song-notifications');
   notifBtn.title = browser.i18n.getMessage("notificationsTitle");
@@ -241,14 +257,18 @@ function createBigPlayer(response, tab) {
 
 }
 
-function onWheelVolume(volumeSelector, tab,  event) {
+function onWheelVolume(volumeSelector, tab, event) {
   let vol = parseFloat(volumeSelector.value);
-  event.deltaY<0?vol = vol  + 0.05:vol = vol  - 0.05;
-  if(vol > 1) vol =1;
-  if(vol < 0) vol =0;
+  event.deltaY < 0 ? vol = vol + 0.05 : vol = vol - 0.05;
+  if (vol > 1) {
+    vol = 1;
+  }
+  if (vol < 0) {
+    vol = 0;
+  }
   volumeSelector.value = vol;
   browser.tabs.sendMessage(tab.id, {action: "volume", volume: vol})
- }
+}
 
 function updatePlayButtonsState(pressedI, isPlaying) {
   let elementsByClassName = document.getElementsByClassName("playToggle");
@@ -370,10 +390,10 @@ function createSmPlayer(response, tab) {
 }
 
 function togglePlayStatusIcon(isPlaying, button) {
-  if(isPlaying) {
+  if (isPlaying) {
     button.textContent = "pause";
     button.title = browser.i18n.getMessage("pause");
-  }else {
+  } else {
     button.textContent = "play_arrow";
     button.title = browser.i18n.getMessage("play");
   }

@@ -9,6 +9,15 @@ body {
   overflow-x: hidden;
 }
 
+.welcome {
+  width: 100%;
+  margin: 10px auto;
+  flex-direction: row;
+  align-items: center;
+  font-size: 18px;
+  display: none;
+}
+
 .player {
   width: 100%;
   margin: 10px auto;
