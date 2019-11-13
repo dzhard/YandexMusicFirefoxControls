@@ -3,32 +3,31 @@
     "message": "Яндекс.Музыка Управление",
     "description": "Yandex Music Controls and hotkeys."
   },
-
   "extensionDescription": {
-    "message": "Управление для Яндекс.Музыка",
+    "message": "Управление для Яндекс Музыка",
     "description": "Description of the extension."
   },
   "notificationTitle": {
-    "message": "Яндекс.Музыка",
+    "message": "Яндекс Музыка",
     "description": "Notification title."
   },
   "notificationContent": {
     "message": "Сейчас играет: $ARTIST$ - $TRACK$.",
     "description": "Tells the user which track is playing.",
     "placeholders": {
-      "artist" : {
-        "content" : "$1",
-        "example" : "неизвестный исполнитель"
+      "artist": {
+        "content": "$1",
+        "example": "неизвестный исполнитель"
       },
-      "track" : {
-        "content" : "$2",
-        "example" : "неизвестный трек"
+      "track": {
+        "content": "$2",
+        "example": "неизвестный трек"
       }
     }
   },
   "cmPrev": {
-  "message": "Предыдущий ($1)",
-  "description": "Previous track"
+    "message": "Предыдущий ($1)",
+    "description": "Previous track"
   },
   "cmNext": {
     "message": "Следующий ($1)",
@@ -97,5 +96,9 @@
   "showNotificationsLabel": {
     "message": "Показывать уведомления",
     "description": "Show Notifications"
+  },
+  "openYaMusicMessage": {
+    "message": "Открыть Яндекс Музыка",
+    "description": "Open Yandex.Music"
   }
 }

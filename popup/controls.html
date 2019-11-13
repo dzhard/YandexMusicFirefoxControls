@@ -2,10 +2,14 @@
 
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-type">
-  <link href="../css/controls.css" rel="stylesheet">
+  <link href="controls.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+<div class='welcome' id="welcome">
+  <img alt="Image" class="image" src='../icons/icon-48.png'/>
+  <label style="height: available; cursor: pointer" id="openYaMessage">Open Ya.M</label>
+</div>
 <div class='player' id="player">
   <div class='album-cover ambilight'>
     <img alt="Image" class="image" id="albumcover" src='ym-image.png'/>
@@ -52,7 +56,8 @@
     <div class='playerbtn-sm'>
       <i class="material-icons volume" id="volume">volume_up</i>
       <span class="volume_popup">
-          <input type="range" min=0 max=1 value=0 step="0.01" class="volume_selector" id="volume_selector" orient="vertical"/>
+          <input type="range" min=0 max=1 value=0 step="0.01" class="volume_selector" id="volume_selector"
+                 orient="vertical"/>
       </span>
     </div>
   </div>
