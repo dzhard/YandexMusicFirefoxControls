@@ -17,6 +17,9 @@
   "permissions": [
     "*://music.yandex.ru/*",
     "*://music.yandex.by/*",
+    "*://music.yandex.com/*",
+    "*://music.yandex.kz/*",
+    "*://music.yandex.ua/*",
     "activeTab",
     "tabs",
     "notifications",
@@ -36,7 +39,10 @@
     {
       "matches": [
         "*://music.yandex.ru/*",
-        "*://music.yandex.by/*"
+        "*://music.yandex.by/*",
+        "*://music.yandex.com/*",
+        "*://music.yandex.kz/*",
+        "*://music.yandex.ua/*"
       ],
       "js": [
         "injector.js"
