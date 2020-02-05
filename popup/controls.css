@@ -148,6 +148,8 @@ body {
 
 .ambilight .image {
   width: 100%;
+  position: relative;
+  z-index: 100;
 }
 
 .ambilight .light {
