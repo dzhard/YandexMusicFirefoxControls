@@ -27,7 +27,10 @@ function requestTabsByDomain(domain) {
 function requestAllTabs() {
   return Promise.all([
     requestTabsByDomain("https://music.yandex.ru/*"),
-    requestTabsByDomain("https://music.yandex.by/*")
+    requestTabsByDomain("https://music.yandex.by/*"),
+    requestTabsByDomain("https://music.yandex.com/*"),
+    requestTabsByDomain("https://music.yandex.kz/*"),
+    requestTabsByDomain("https://music.yandex.ua/*")
   ])
   .then(responses => responses.flat(1));
 }
@@ -76,7 +79,7 @@ function loadedYandexTabs(tabs) {
     openYaMusicMessage.innerText = browser.i18n.getMessage("openYaMusicMessage");
     openYaMusicPanel.style.display = "flex";
     document.getElementById("openYaMessage").onclick = () => {
-      browser.tabs.create({"url": "https://music.yandex.ru/"})
+      browser.tabs.create({"url": "https://music.yandex.ru/"});
       window.close();
     }
   }
