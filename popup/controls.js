@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", handleDomLoaded);
 let activePlayer;
 let progressTimer;
 let showNotifications;
+let nextTrackEnabled, prevTrackEnabled;
 
 browser.runtime.onMessage.addListener(handleMessage);
 
@@ -172,16 +173,20 @@ function createBigPlayer(response, tab) {
   fwdBtn.title = browser.i18n.getMessage("next");
 
   bwdBtn.onclick = () => {
-    browser.tabs.sendMessage(tab.id, {action: "prev"})
-    .then(rs => {
-      fillPlayerData(rs)
-    }).catch(onError);
+    if (prevTrackEnabled) {
+      browser.tabs.sendMessage(tab.id, {action: "prev"})
+      .then(rs => {
+        fillPlayerData(rs)
+      }).catch(onError);
+    }
   };
   fwdBtn.onclick = () => {
-    browser.tabs.sendMessage(tab.id, {action: "next"})
-    .then(rs => {
-      fillPlayerData(rs)
-    }).catch(onError);
+    if (nextTrackEnabled) {
+      browser.tabs.sendMessage(tab.id, {action: "next"})
+      .then(rs => {
+        fillPlayerData(rs)
+      }).catch(onError);
+    }
   };
 
   let likeBtn = document.getElementById('song-like');
@@ -314,6 +319,15 @@ function fillPlayerData(response, tabId) {
     bandTitle.onclick = navigateToTab;
   }
   let songProgress = document.getElementById('songprogress');
+
+  if (response.controlState !== null) {
+    let bwdBtn = document.getElementById('bwd-btn');
+    let fwdBtn = document.getElementById('fwd-btn');
+    nextTrackEnabled = response.controlState.next === true;
+    prevTrackEnabled = response.controlState.prev === true;
+    bwdBtn.className = prevTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
+    fwdBtn.className = nextTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
+  }
 
   if (response.progress.position !== 0 && response.progress.duration !== 0) {
     let currentPos = response.progress.position / response.progress.duration * 100;
