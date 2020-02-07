@@ -1,8 +1,13 @@
 function onTrackChanged() {
-  window.postMessage({type: "track", msg:  getTrack()});
+  window.postMessage({type: "track", msg: getTrack()});
+}
+
+function onControlsChanged() {
+  window.postMessage({type: "controls", msg:  externalAPI.getControls()});
 }
 
 externalAPI.on(externalAPI.EVENT_TRACK, onTrackChanged);
+externalAPI.on(externalAPI.EVENT_CONTROLS, onControlsChanged);
 
 function getTrack() {
   return {
@@ -12,7 +17,7 @@ function getTrack() {
     progress: externalAPI.getProgress(),
     volume: externalAPI.getVolume(),
     repeat: externalAPI.getRepeat(),
-    shuffle: externalAPI.getShuffle(),
+    shuffle: externalAPI.getShuffle()
   };
 }
 

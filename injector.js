@@ -25,6 +25,8 @@ function receiveMessage(event) {
             }
           }
       )
+    } else if (event.data.type === "controls") {
+      browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
     }
   }
 }
@@ -68,11 +70,9 @@ function onRecievedMessage(message, sender, sendResponse) {
   switch (message.action) {
     case "next":
       externalAPI.next();
-      sendResponse(window.wrappedJSObject.getTrack());
       break;
     case "prev":
       externalAPI.prev();
-      sendResponse(window.wrappedJSObject.getTrack());
       break;
     case "pause":
       externalAPI.togglePause();

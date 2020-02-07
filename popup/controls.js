@@ -11,6 +11,9 @@ function handleMessage(message, sender) {
     if (message.type === "track") {
       fillPlayerData(message.msg)
     }
+    if (message.type === "controls") {
+      updateControlsState(message.msg)
+    }
   }
 }
 
@@ -174,18 +177,12 @@ function createBigPlayer(response, tab) {
 
   bwdBtn.onclick = () => {
     if (prevTrackEnabled) {
-      browser.tabs.sendMessage(tab.id, {action: "prev"})
-      .then(rs => {
-        fillPlayerData(rs)
-      }).catch(onError);
+      browser.tabs.sendMessage(tab.id, {action: "prev"});
     }
   };
   fwdBtn.onclick = () => {
     if (nextTrackEnabled) {
-      browser.tabs.sendMessage(tab.id, {action: "next"})
-      .then(rs => {
-        fillPlayerData(rs)
-      }).catch(onError);
+      browser.tabs.sendMessage(tab.id, {action: "next"});
     }
   };
 
@@ -318,17 +315,8 @@ function fillPlayerData(response, tabId) {
     albumTitle.onclick = navigateToTab;
     bandTitle.onclick = navigateToTab;
   }
+  updateControlsState(response.controlState);
   let songProgress = document.getElementById('songprogress');
-
-  if (response.controlState !== null) {
-    let bwdBtn = document.getElementById('bwd-btn');
-    let fwdBtn = document.getElementById('fwd-btn');
-    nextTrackEnabled = response.controlState.next === true;
-    prevTrackEnabled = response.controlState.prev === true;
-    bwdBtn.className = prevTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
-    fwdBtn.className = nextTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
-  }
-
   if (response.progress.position !== 0 && response.progress.duration !== 0) {
     let currentPos = response.progress.position / response.progress.duration * 100;
     songProgress.style.width = Math.round(currentPos) + "%";
@@ -340,6 +328,15 @@ function fillPlayerData(response, tabId) {
   if (response.isPlaying) {
     progressTimer = setInterval(handleProgress, timeout, songProgress);
   }
+}
+
+function updateControlsState(controls) {
+  let bwdBtn = document.getElementById('bwd-btn');
+  let fwdBtn = document.getElementById('fwd-btn');
+  prevTrackEnabled = controls.prev === true;
+  nextTrackEnabled = controls.next === true;
+  bwdBtn.className = prevTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
+  fwdBtn.className = nextTrackEnabled ? "material-icons" : "material-icons md-dark md-inactive";
 }
 
 function createSmPlayer(response, tab) {
