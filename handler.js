@@ -6,8 +6,13 @@ function onControlsChanged() {
   window.postMessage({type: "controls", msg:  externalAPI.getControls()});
 }
 
+function onProgressChanged() {
+  window.postMessage({type: "progress", msg:  externalAPI.getProgress()});
+}
+
 externalAPI.on(externalAPI.EVENT_TRACK, onTrackChanged);
 externalAPI.on(externalAPI.EVENT_CONTROLS, onControlsChanged);
+externalAPI.on(externalAPI.EVENT_PROGRESS, onProgressChanged);
 
 function getTrack() {
   return {

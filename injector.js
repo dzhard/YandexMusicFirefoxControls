@@ -27,6 +27,8 @@ function receiveMessage(event) {
       )
     } else if (event.data.type === "controls") {
       browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
+    } else if (event.data.type === "progress") {
+      browser.runtime.sendMessage("yamusic@dzhard.github.com", event.data);
     }
   }
 }
@@ -103,6 +105,9 @@ function onRecievedMessage(message, sender, sendResponse) {
       break;
     case "volume":
       externalAPI.setVolume(message.volume);
+      break;
+    case "seek":
+      externalAPI.setPosition(message.pos)
       break;
     default:
       console.log('unknown action requested');

@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", handleDomLoaded);
 let activePlayer;
-let progressTimer;
 let showNotifications;
 let nextTrackEnabled, prevTrackEnabled;
 
@@ -13,6 +12,10 @@ function handleMessage(message, sender) {
     }
     if (message.type === "controls") {
       updateControlsState(message.msg)
+    }
+    if (message.type === "progress") {
+      activePlayer.response.progress = message.msg;
+      updateProgress(message.msg)
     }
   }
 }
@@ -283,13 +286,18 @@ function updatePlayButtonsState(pressedI, isPlaying) {
   }
 }
 
-function handleProgress(progressbar) {
-  let newWidth = parseInt(progressbar.style.width.replace("%", "")) + 1;
-  if (newWidth > 100) {
-    newWidth = 100;
-    stopProgress();
+function updateProgress(progress) {
+  let songProgress = document.getElementById('songprogress');
+  let songLoadedProgress = document.getElementById('song-load-progress');
+  if (progress.position !== 0 && progress.duration !== 0) {
+    let currentPos = progress.position / progress.duration * 100;
+    let currentLoadPos = progress.loaded / progress.duration * 100;
+    songProgress.style.width = Math.round(currentPos) + "%";
+    songLoadedProgress.style.width = Math.round(currentLoadPos) + "%";
+  } else {
+    songProgress.style.width = "0%";
+    songLoadedProgress.style.width = "0%";
   }
-  progressbar.style.width = newWidth + "%";
 }
 
 function fillPlayerData(response, tabId) {
@@ -316,18 +324,17 @@ function fillPlayerData(response, tabId) {
     bandTitle.onclick = navigateToTab;
   }
   updateControlsState(response.controlState);
-  let songProgress = document.getElementById('songprogress');
-  if (response.progress.position !== 0 && response.progress.duration !== 0) {
-    let currentPos = response.progress.position / response.progress.duration * 100;
-    songProgress.style.width = Math.round(currentPos) + "%";
-  } else {
-    songProgress.style.width = "0%";
-  }
-  stopProgress();
-  let timeout = response.currentTrack.duration / 100 * 1000;
-  if (response.isPlaying) {
-    progressTimer = setInterval(handleProgress, timeout, songProgress);
-  }
+  updateProgress(response.progress)
+  document.getElementById("songPb").onclick = seekProgress;
+}
+
+function seekProgress(e) {
+  let songProgress = document.getElementById("songPb");
+  let pbwidth = parseInt(window.getComputedStyle(songProgress).width);
+  let perc = e.offsetX / pbwidth;
+  let curtime = Math.round(activePlayer.response.progress.duration * perc);
+  browser.tabs.sendMessage(activePlayer.tab.id, {action: "seek", pos: curtime});
+  document.getElementById('songprogress').style.width = perc * 100 + "%";
 }
 
 function updateControlsState(controls) {

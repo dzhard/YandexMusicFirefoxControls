@@ -97,15 +97,18 @@ body {
 
 .player .song-progress-bar {
   width: 100%;
-  height: 3px;
   background: #ddd;
   margin: 5px 0;
 }
 
 .player .song-progress-bar .inner-bar {
-  height: 3px;
+  height: 4px;
   background: #df405a;
-  width: 45%;
+}
+
+.player .song-progress-bar .inner-loaded-bar {
+  height: 2px;
+  background: #cbcbcb;
 }
 
 .player .player-buttons {
