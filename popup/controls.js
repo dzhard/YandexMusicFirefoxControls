@@ -163,12 +163,6 @@ function createBigPlayer(response, tab) {
   playI.onclick = () => {
     browser.tabs.sendMessage(tab.id, {action: "pause"})
     .then(rs => {
-      if (rs.isPlaying) {
-        let songProgress = document.getElementById('songprogress');
-        progressTimer = setInterval(handleProgress, 1000, songProgress);
-      } else {
-        stopProgress();
-      }
       updatePlayButtonsState(playI, rs.isPlaying)
     }).catch(onError);
   };
@@ -403,7 +397,6 @@ function createSmPlayer(response, tab) {
     .then(rs => {
       togglePlayStatusIcon(rs.isPlaying, playI);
       updatePlayButtonsState(playI, rs.isPlaying);
-      stopProgress();
     }).catch(onError);
   };
   document.body.appendChild(player);
@@ -450,11 +443,5 @@ function toggleRepeatStatusIcon(repeat, button) {
     button.title = browser.i18n.getMessage("repeat");
     button.className = "material-icons";
     button.textContent = "repeat"
-  }
-}
-
-function stopProgress() {
-  if (progressTimer !== undefined && progressTimer != null) {
-    clearInterval(progressTimer);
   }
 }
