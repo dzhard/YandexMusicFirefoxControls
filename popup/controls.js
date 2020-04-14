@@ -299,9 +299,12 @@ function fillPlayerData(response, tabId) {
       'http://' + response.currentTrack.cover.replace('%%', '200x200'));
   document.getElementById('albumcover-smoke').setAttribute('src',
       'http://' + response.currentTrack.cover.replace('%%', '200x200'));
+  let currentTime = document.getElementById('currenttime');
+  let totalTime = document.getElementById('totaltime');   
   let songTitle = document.getElementById('songtitle');
   let albumTitle = document.getElementById('albumtitle');
   let bandTitle = document.getElementById('bandtitle');
+  totalTime.textContent = formatTime(response.currentTrack.duration);
   albumTitle.textContent = response.currentTrack.album.title;
   songTitle.textContent = response.currentTrack.title;
   bandTitle.childNodes[0].textContent = response.currentTrack.artists.length > 0
@@ -444,4 +447,10 @@ function toggleRepeatStatusIcon(repeat, button) {
     button.className = "material-icons";
     button.textContent = "repeat"
   }
+}
+
+function formatTime(seconds) {
+  console.log(seconds);
+  let timeString = new Date(0,0,0,0,0,Math.ceil(seconds),0).toTimeString().slice(0,8)
+  return timeString.startsWith("00:") ? timeString.slice(3) : timeString;
 }
