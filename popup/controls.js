@@ -283,14 +283,17 @@ function updatePlayButtonsState(pressedI, isPlaying) {
 function updateProgress(progress) {
   let songProgress = document.getElementById('songprogress');
   let songLoadedProgress = document.getElementById('song-load-progress');
+  let currentTime = document.getElementById('currenttime');
   if (progress.position !== 0 && progress.duration !== 0) {
     let currentPos = progress.position / progress.duration * 100;
     let currentLoadPos = progress.loaded / progress.duration * 100;
     songProgress.style.width = Math.round(currentPos) + "%";
     songLoadedProgress.style.width = Math.round(currentLoadPos) + "%";
+    currentTime.textContent = formatTime(progress.position);
   } else {
     songProgress.style.width = "0%";
     songLoadedProgress.style.width = "0%";
+    currentTime.textContent = "00:00";
   }
 }
 
@@ -299,9 +302,11 @@ function fillPlayerData(response, tabId) {
       'http://' + response.currentTrack.cover.replace('%%', '200x200'));
   document.getElementById('albumcover-smoke').setAttribute('src',
       'http://' + response.currentTrack.cover.replace('%%', '200x200'));
+  let totalTime = document.getElementById('totaltime');   
   let songTitle = document.getElementById('songtitle');
   let albumTitle = document.getElementById('albumtitle');
   let bandTitle = document.getElementById('bandtitle');
+  totalTime.textContent = formatTime(response.currentTrack.duration);
   albumTitle.textContent = response.currentTrack.album.title;
   songTitle.textContent = response.currentTrack.title;
   bandTitle.childNodes[0].textContent = response.currentTrack.artists.length > 0
@@ -444,4 +449,11 @@ function toggleRepeatStatusIcon(repeat, button) {
     button.className = "material-icons";
     button.textContent = "repeat"
   }
+}
+
+function formatTime(seconds) {
+  let timeString = new Date(0, 0, 0, 0, 0, Math.floor(seconds), 0)
+    .toTimeString()
+    .slice(0, 8);
+  return timeString.startsWith("00:") ? timeString.slice(3) : timeString;
 }
